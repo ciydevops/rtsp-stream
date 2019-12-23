@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Live Cam</title>
+    </head>
+
+    <script src="//cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <body>
+        <video id="video"></video>
+        <script>
+            var video = document.getElementById('video');
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                // bind them together
+                hls.attachMedia(video);
+                // MEDIA_ATTACHED event is fired by hls object once MediaSource is ready
+                hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                    console.log("video and hls.js are now bound together !");
+                    hls.loadSource("http://10.1.4.31/stream/innenhof.m3u8");
+                    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                        console.log("manifest loaded, found " + data.levels.length + " quality level");
+                    });
+                });
+            }
+        </script>    
+    </body>
+</html>
